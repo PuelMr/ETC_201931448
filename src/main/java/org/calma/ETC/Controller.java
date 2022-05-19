@@ -2,69 +2,92 @@ package org.calma.ETC;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
+    private List<Departement> departement;
     @FXML private TextField identification;
+    private String valueIdent;
 
     @FXML private TextField prenom;
-    private String prenomValue;
+    private String prenomValue = "";
 
     @FXML private TextField nom;
-    private String nomValue;
+    private String nomValue = "";
 
     @FXML private DatePicker date;
-    private String naissance;
+    private String naissance = "";
 
     @FXML private TextField courriel;
     private String valueCourriel;
 
     @FXML private ImageView image;
-    @FXML private TextArea inclus;
-    @FXML private TextArea exclus;
+    @FXML private ListView inclus;
+    private String valInclus = "";
+    @FXML private ListView exclus;
     @FXML private Button include;
     @FXML private Button exclude;
     @FXML private Button validation;
 
     public void initialize(){
         validation.setDisable(true);
+        departement = new ArrayList<>();
+        departement.add(new Departement(0, "Administration"));
+        departement.add(new Departement(1, "Ressources humaine"));
+        departement.add(new Departement(2, "Marketing"));
+        departement.add(new Departement(3, "Logistique"));
+        inclus.getItems().addAll(departement);
     }
 
     @FXML
     public void fullName(KeyEvent e) {
         if (e.getSource() == prenom) {
-            if (prenom.getText().length() >= 3) {
-                if (prenomValue.isEmpty()) prenomValue = prenom.getText().substring(0, 3);
-                setIdentification();
-            } else prenomValue = "";
+            if (prenom.getText().length() >= 3) prenomValue = prenom.getText().substring(0, 3).toLowerCase();
+            else prenomValue = "";
         }
         if (e.getSource() == nom) {
-            if (nom.getText().length() >= 3) {
-                if (nomValue.isEmpty()) {
-                    nomValue = nom.getText().substring(0, 3);
-                    setIdentification();
-                } else nomValue = "";
-            }
+            if (nom.getText().length() >= 3) nomValue = nom.getText().substring(0, 3).toLowerCase();
+            else nomValue = "";
         }
+        setIdentification();
     }
     @FXML
     public void date(ActionEvent e) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yy");
         naissance = date.getValue().format(formatter);
+        setIdentification();
+    }
+    @FXML
+    public void verifCourriel(KeyEvent e) {
+        if(courriel.getText().contains("@") && courriel.getText().contains(".")){
+            Image newImage = new Image(getClass().getResourceAsStream("images/email_valid.png"));
+            image.setImage(newImage);
+        }
+    }
+    @FXML
+    public void switchSide(ActionEvent e) {
+        if(e.getSource() == include){
+
+        }
+        if(e.getSource() == exclude){
+
+        }
     }
 
     private void setIdentification(){
-        identification.setText(nomValue + "-" + prenomValue + "-" + naissance);
+        valueIdent = nomValue + "-" + prenomValue + "-" + naissance;
+        identification.setText(valueIdent);
     }
+
 
 
 }
