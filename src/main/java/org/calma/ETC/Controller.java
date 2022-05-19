@@ -6,9 +6,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.util.StringConverter;
-
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ public class Controller {
 
     @FXML private TextField courriel;
     private String valueCourriel;
+    private boolean verifCourriel;
 
     @FXML private ImageView image;
     @FXML private ListView inclus;
@@ -71,15 +69,25 @@ public class Controller {
         if(courriel.getText().contains("@") && courriel.getText().contains(".")){
             Image newImage = new Image(getClass().getResourceAsStream("images/email_valid.png"));
             image.setImage(newImage);
-        }
+            verifCourriel = true;
+            activacteButton();
+        } else verifCourriel = false;
+
     }
     @FXML
     public void switchSide(ActionEvent e) {
         if(e.getSource() == include){
+            if(exclus.getSelectionModel().getSelectedItem() != null){
+                inclus.getItems().add(exclus.getSelectionModel().getSelectedItem());
+                exclus.getItems().remove(exclus.getSelectionModel().getSelectedIndex());
+            }
 
         }
         if(e.getSource() == exclude){
-
+            if(inclus.getSelectionModel().getSelectedItem() != null) {
+                exclus.getItems().add(inclus.getSelectionModel().getSelectedItem());
+                inclus.getItems().remove(inclus.getSelectionModel().getSelectedIndex());
+            }
         }
     }
 
@@ -88,6 +96,8 @@ public class Controller {
         identification.setText(valueIdent);
     }
 
+    private void activacteButton(){
 
+    }
 
 }
