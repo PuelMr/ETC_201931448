@@ -91,9 +91,9 @@
             <Label text="Nom" GridPane.rowIndex="3" />
             <TextField fx:id="nom" onKeyTyped="#fullName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Date de naissance" GridPane.rowIndex="4" />
-            <DatePicker fx:id="date" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <DatePicker fx:id="date" onAction="#date" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label text="Courriel" GridPane.rowIndex="5" />
-            <TextField fx:id="courriel" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="courriel" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>
