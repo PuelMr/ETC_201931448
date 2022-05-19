@@ -8,9 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Controller {
     //model
@@ -35,8 +34,8 @@ public class Controller {
         model.addDepartement(new Departement(2, "Marketing"));
         model.addDepartement(new Departement(3, "Logistique"));
         inclus.getItems().addAll(model.getDepartement());
+        setIdentification();
     }
-
     @FXML
     public void fullName(KeyEvent e) {
         if (e.getSource() == prenom) {
@@ -66,11 +65,17 @@ public class Controller {
         setIdentification();
     }
     @FXML
-    public void verifCourriel(KeyEvent e) {
+    public void verifCourriel(KeyEvent e) throws FileNotFoundException {
         if(courriel.getText().contains("@") && courriel.getText().contains(".")){
+            FileInputStream fileValidation = new FileInputStream("src/main/resources/images/email_valid.png");
+            image.setImage(new Image(fileValidation));
             model.setVerifCourriel(true);
             activateButton();
-        } else model.setVerifCourriel(false);
+        } else {
+            FileInputStream fileValidation = new FileInputStream("src/main/resources/images/email_invalid.png");
+            image.setImage(new Image(fileValidation));
+            model.setVerifCourriel(false);
+        }
     }
     @FXML
     public void switchSide(ActionEvent e) {
@@ -79,7 +84,6 @@ public class Controller {
                 inclus.getItems().add(exclus.getSelectionModel().getSelectedItem());
                 exclus.getItems().remove(exclus.getSelectionModel().getSelectedIndex());
             }
-
         }
         if(e.getSource() == exclude){
             if(inclus.getSelectionModel().getSelectedItem() != null) {
@@ -96,16 +100,12 @@ public class Controller {
                 "\n Date de naissance : " + date.getValue() +
                 "\n Courriel : " + courriel.getText());
     }
-
     private void setIdentification(){
         model.setValueIdent();
         identification.setText(model.getValueIdent());
     }
-
     private void activateButton(){
-        if(model.isVerifPrenom() && model.isVerifNom() && model.isVerifCourriel()){
-            validation.setDisable(false);
-        } else validation.setDisable(true);
+        if(model.isVerifPrenom() && model.isVerifNom() && model.isVerifCourriel())validation.setDisable(false);
+        else validation.setDisable(true);
     }
-
 }

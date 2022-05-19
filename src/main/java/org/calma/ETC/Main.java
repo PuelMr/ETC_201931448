@@ -10,8 +10,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(Main.class.getResource("ETC.fxml"));
+        Scene scene = new Scene(root, 640 ,480);
         stage.setTitle("Fiche descriptive");
-        stage.setScene(new Scene(root));
+        stage.setScene(scene);
         stage.show();
     }
 
