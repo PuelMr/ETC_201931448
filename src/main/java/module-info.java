@@ -1,8 +1,8 @@
-module com.example.etc_201931448 {
+module org.calma.ETC {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens com.example.etc_201931448 to javafx.fxml;
-    exports com.example.etc_201931448;
+    opens org.calma.ETC to javafx.fxml;
+    exports org.calma.ETC;
 }
