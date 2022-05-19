@@ -129,7 +129,7 @@
                   <Insets left="45.0" right="45.0" />
                </padding>
             </HBox>
-            <Button fx:id="validation" mnemonicParsing="false" text="Valider" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+            <Button fx:id="validation" mnemonicParsing="false" onMouseClicked="#validation" text="Valider" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

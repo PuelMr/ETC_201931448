@@ -6,73 +6,71 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-    private List<Departement> departement;
+    //model
+    private Model model;
     @FXML private TextField identification;
-    private String valueIdent;
-
     @FXML private TextField prenom;
-    private String prenomValue = "";
-
     @FXML private TextField nom;
-    private String nomValue = "";
-
     @FXML private DatePicker date;
-    private String naissance = "";
-
     @FXML private TextField courriel;
-    private String valueCourriel;
-    private boolean verifCourriel;
-
     @FXML private ImageView image;
     @FXML private ListView inclus;
-    private String valInclus = "";
     @FXML private ListView exclus;
     @FXML private Button include;
     @FXML private Button exclude;
     @FXML private Button validation;
 
     public void initialize(){
+        model = new Model();
         validation.setDisable(true);
-        departement = new ArrayList<>();
-        departement.add(new Departement(0, "Administration"));
-        departement.add(new Departement(1, "Ressources humaine"));
-        departement.add(new Departement(2, "Marketing"));
-        departement.add(new Departement(3, "Logistique"));
-        inclus.getItems().addAll(departement);
+        model.addDepartement(new Departement(0, "Administration"));
+        model.addDepartement(new Departement(1, "Ressources humaine"));
+        model.addDepartement(new Departement(2, "Marketing"));
+        model.addDepartement(new Departement(3, "Logistique"));
+        inclus.getItems().addAll(model.getDepartement());
     }
 
     @FXML
     public void fullName(KeyEvent e) {
         if (e.getSource() == prenom) {
-            if (prenom.getText().length() >= 3) prenomValue = prenom.getText().substring(0, 3).toLowerCase();
-            else prenomValue = "";
+            if (prenom.getText().length() >= 3) {
+                model.setPrenom(prenom.getText().substring(0, 3).toLowerCase());
+                model.setVerifPrenom(true);
+            } else {
+                model.setPrenom("");
+                model.setVerifPrenom(false);
+            }
         }
         if (e.getSource() == nom) {
-            if (nom.getText().length() >= 3) nomValue = nom.getText().substring(0, 3).toLowerCase();
-            else nomValue = "";
+            if (nom.getText().length() >= 3) {
+                model.setNom(nom.getText().substring(0, 3).toLowerCase());
+                model.setVerifNom(true);
+            } else {
+                model.setNom("");
+                model.setVerifNom(false);
+            }
         }
+        activateButton();
         setIdentification();
     }
     @FXML
     public void date(ActionEvent e) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yy");
-        naissance = date.getValue().format(formatter);
+        model.setNaissance(date);
         setIdentification();
     }
     @FXML
     public void verifCourriel(KeyEvent e) {
         if(courriel.getText().contains("@") && courriel.getText().contains(".")){
-            Image newImage = new Image(getClass().getResourceAsStream("images/email_valid.png"));
-            image.setImage(newImage);
-            verifCourriel = true;
-            activacteButton();
-        } else verifCourriel = false;
-
+            model.setVerifCourriel(true);
+            activateButton();
+        } else model.setVerifCourriel(false);
     }
     @FXML
     public void switchSide(ActionEvent e) {
@@ -90,14 +88,24 @@ public class Controller {
             }
         }
     }
-
-    private void setIdentification(){
-        valueIdent = nomValue + "-" + prenomValue + "-" + naissance;
-        identification.setText(valueIdent);
+    @FXML
+    public void validation(MouseEvent e) {
+        System.out.println("Identification : " + identification.getText() +
+                "\n Prenom : " + prenom.getText() +
+                "\n Nom : " + nom.getText() +
+                "\n Date de naissance : " + date.getValue() +
+                "\n Courriel : " + courriel.getText());
     }
 
-    private void activacteButton(){
+    private void setIdentification(){
+        model.setValueIdent();
+        identification.setText(model.getValueIdent());
+    }
 
+    private void activateButton(){
+        if(model.isVerifPrenom() && model.isVerifNom() && model.isVerifCourriel()){
+            validation.setDisable(false);
+        } else validation.setDisable(true);
     }
 
 }
